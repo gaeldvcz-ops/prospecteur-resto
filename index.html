@@ -23,10 +23,8 @@
   main { max-width:1060px; margin:0 auto; padding:28px 20px; }
   .panel { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px 28px; margin-bottom:16px; }
   .panel-title { font-size:12px; font-weight:700; color:var(--gold); letter-spacing:1px; text-transform:uppercase; margin-bottom:16px; }
-  .g4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:14px; margin-bottom:14px; }
   .g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:14px; }
-  .g2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
-  .g-rating { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:20px; align-items:end; }
+  .g4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:14px; margin-bottom:20px; }
   label { display:block; color:var(--gold); font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-bottom:5px; }
   .label-hint { color:var(--muted); font-size:10px; font-weight:400; letter-spacing:0; text-transform:none; margin-left:4px; }
   input,select { width:100%; padding:10px 14px; background:#0b0d14; border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:14px; outline:none; font-family:inherit; appearance:none; }
@@ -40,40 +38,57 @@
   .ba { padding:6px 12px; background:transparent; border:1px solid var(--border); border-radius:6px; color:var(--muted); font-size:12px; cursor:pointer; font-family:inherit; }
   /* Historique */
   .history-panel { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 24px; margin-bottom:16px; }
-  .history-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px; margin-top:10px; }
-  .history-tag { background:#0e1018; border:1px solid #1e2235; border-radius:8px; padding:10px 14px; font-size:12px; }
-  .history-tag .ht-cp { color:var(--gold); font-weight:700; font-size:14px; }
-  .history-tag .ht-type { color:var(--dim); font-size:11px; margin-top:2px; }
-  .history-tag .ht-count { color:#7ac060; font-size:11px; margin-top:4px; }
-  .history-tag .ht-dup { color:#666; font-size:10px; }
-  /* Accum bar */
-  .accum-bar { background:#13172a; border:1px solid #2a3560; border-radius:10px; padding:12px 18px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-  .accum-bar .al { font-size:13px; color:#8899cc; }
-  .accum-bar .al b { color:var(--gold); }
+  .history-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:8px; margin-top:10px; }
+  .history-tag { background:#0e1018; border:1px solid #1e2235; border-radius:8px; padding:10px 14px; }
+  .ht-cp { color:var(--gold); font-weight:700; font-size:14px; }
+  .ht-type { color:var(--dim); font-size:11px; margin-top:2px; }
+  .ht-count { color:#7ac060; font-size:11px; margin-top:4px; }
+  .ht-dup { color:#555; font-size:10px; }
+  /* Results */
   .rh { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:10px; }
   .rc { font-size:14px; color:var(--dim); }
   .rc .big { color:var(--orange); font-weight:700; font-size:20px; }
-  .ra { display:flex; gap:8px; }
-  .card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 20px; cursor:pointer; display:flex; gap:14px; align-items:flex-start; margin-bottom:8px; }
+  .ra { display:flex; gap:8px; flex-wrap:wrap; }
+  /* Cards */
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 20px; display:flex; gap:14px; align-items:flex-start; margin-bottom:8px; }
   .card:hover { border-color:#2e3248; }
   .card.on { background:#13172a; border-color:var(--orange); }
-  .cb { width:18px; height:18px; border-radius:4px; flex-shrink:0; margin-top:2px; border:2px solid #3a3d50; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#fff; }
+  .card-left { display:flex; flex-direction:column; gap:8px; align-items:center; flex-shrink:0; }
+  .cb { width:18px; height:18px; border-radius:4px; border:2px solid #3a3d50; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#fff; cursor:pointer; }
   .card.on .cb { border-color:var(--orange); background:var(--orange); }
+  /* Score présence */
+  .score { display:flex; flex-direction:column; gap:3px; }
+  .score-dot { width:10px; height:10px; border-radius:50%; }
+  .dot-green { background:#4caf50; }
+  .dot-orange { background:#EE6312; }
+  .dot-red { background:#c0392b; }
+  .dot-grey { background:#2a2d3e; }
+  /* Card body */
   .cn { font-size:15px; font-weight:700; color:#fff; margin-bottom:4px; }
   .cm { font-size:12px; color:var(--dim); margin-bottom:3px; }
   .cr { color:var(--orange); font-weight:600; }
-  .ca { font-size:12px; color:#666; }
-  .cl { display:flex; gap:14px; flex-wrap:wrap; margin-top:6px; }
+  .ca { font-size:12px; color:#666; margin-bottom:6px; }
+  .cl { display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; align-items:center; }
   .cl a { color:var(--gold); font-size:12px; text-decoration:none; }
   .cl a:hover { text-decoration:underline; }
-  .eb { background:#1e0a0a; border:1px solid #5a1a1a; border-radius:8px; padding:12px 16px; margin-bottom:16px; color:#e05252; font-size:13px; line-height:1.5; }
+  /* Bouton Instagram */
+  .btn-ig { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045); border:none; border-radius:5px; color:#fff; font-size:11px; font-weight:700; cursor:pointer; text-decoration:none; white-space:nowrap; }
+  .btn-ig:hover { opacity:0.85; }
+  /* Présence badges */
+  .presence { display:flex; gap:5px; flex-wrap:wrap; margin-top:5px; }
+  .badge { font-size:10px; padding:2px 7px; border-radius:10px; font-weight:600; }
+  .badge-ok { background:#0e2010; color:#7ac060; border:1px solid #1a4020; }
+  .badge-ko { background:#1a1010; color:#666; border:1px solid #2a1818; }
+  /* Misc */
+  .eb { background:#1e0a0a; border:1px solid #5a1a1a; border-radius:8px; padding:12px 16px; margin-bottom:16px; color:#e05252; font-size:13px; }
   .ib { background:#101a0e; border:1px solid #1e3a18; border-radius:8px; padding:10px 14px; margin-bottom:12px; color:#7ac060; font-size:12px; }
-  .empty { text-align:center; padding:50px 20px; color:var(--muted); background:var(--surface); border-radius:12px; border:1px solid var(--border); }
   .ld { display:inline-block; width:14px; height:14px; border:2px solid rgba(255,255,255,0.2); border-top-color:#fff; border-radius:50%; animation:spin 0.7s linear infinite; vertical-align:middle; margin-right:8px; }
   @keyframes spin { to { transform:rotate(360deg); } }
-  .separator { height:1px; background:var(--border); margin:16px 0; }
   .btn-row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-  @media(max-width:700px) { .g4{grid-template-columns:1fr 1fr;} .g3{grid-template-columns:1fr 1fr;} .g2{grid-template-columns:1fr;} .g-rating{grid-template-columns:1fr 1fr;} header{padding:14px 16px;} main{padding:16px 12px;} .panel{padding:16px;} }
+  .legend { display:flex; gap:14px; flex-wrap:wrap; font-size:11px; color:var(--dim); margin-bottom:12px; }
+  .legend-item { display:flex; align-items:center; gap:5px; }
+  .legend-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+  @media(max-width:700px) { .g3{grid-template-columns:1fr 1fr;} .g4{grid-template-columns:1fr 1fr;} header{padding:14px 16px;} main{padding:16px 12px;} .panel{padding:16px;} }
 </style>
 </head>
 <body>
@@ -83,7 +98,7 @@
     <h2>🔑 Clé API Google Places</h2>
     <p>Pour utiliser cet outil, il te faut une clé API Google. Elle est <strong style="color:#C9A96E">gratuite</strong> jusqu'à ~200€/mois de crédits.</p>
     <div class="steps">
-      <b>APIs à activer sur console.cloud.google.com :</b><br>
+      <b>API à activer sur console.cloud.google.com :</b><br>
       → <b>Places API (New)</b><br><br>
       <b>Créer la clé :</b><br>
       Identifiants → Créer une clé API → Copier
@@ -103,15 +118,12 @@
 </header>
 
 <main>
-
-  <!-- Panneau de recherche -->
   <div class="panel">
     <div class="panel-title">Nouvelle recherche</div>
-
     <div class="g3">
       <div>
         <label>Code postal <span class="label-hint">ou ville</span></label>
-        <input type="text" id="city" placeholder="31000, 31100, Toulouse...">
+        <input type="text" id="city" placeholder="31000, 31120, Toulouse...">
       </div>
       <div>
         <label>Type d'établissement</label>
@@ -132,10 +144,9 @@
         <input type="text" id="kw" placeholder="gastronomique, luxe...">
       </div>
     </div>
-
-    <div class="g-rating">
+    <div class="g4">
       <div>
-        <label>Note minimum <span class="label-hint">★</span></label>
+        <label>Note minimum</label>
         <select id="minr">
           <option value="0">Sans minimum</option>
           <option value="2">2★</option>
@@ -147,7 +158,7 @@
         </select>
       </div>
       <div>
-        <label>Note maximum <span class="label-hint">★</span></label>
+        <label>Note maximum</label>
         <select id="maxr">
           <option value="5" selected>Sans maximum</option>
           <option value="4.9">4.9★</option>
@@ -168,17 +179,18 @@
           <option value="10000">10 km</option>
         </select>
       </div>
+      <div style="display:flex;align-items:flex-end">
+        <button class="bp" id="go" style="width:100%">Rechercher →</button>
+      </div>
     </div>
-
-    <div class="btn-row">
-      <button class="bp" id="go">Lancer la recherche →</button>
-      <button class="ba" id="reset-btn" style="display:none">✕ Tout réinitialiser</button>
+    <div id="reset-wrap" style="display:none;margin-top:4px">
+      <button class="ba" id="reset-btn">✕ Tout réinitialiser</button>
     </div>
   </div>
 
-  <!-- Historique des codes postaux recherchés -->
+  <!-- Historique -->
   <div class="history-panel" id="history-panel" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
       <div class="panel-title" style="margin-bottom:0">Codes postaux recherchés</div>
       <div id="accum-summary" style="font-size:13px;color:var(--dim)"></div>
     </div>
@@ -189,6 +201,13 @@
   <div id="info" class="ib" style="display:none"></div>
 
   <div id="rw" style="display:none">
+    <!-- Légende score -->
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#4caf50"></div> Site web</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#EE6312"></div> Téléphone</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div> Manquant</div>
+      <div class="legend-item" style="margin-left:8px;color:#555">● = score de présence digitale</div>
+    </div>
     <div class="rh">
       <div class="rc"><span class="big" id="cnt">0</span> résultat<span id="cnts"></span> · <span id="scnt">0</span> sélectionné<span id="ss"></span></div>
       <div class="ra">
@@ -197,307 +216,304 @@
       </div>
     </div>
     <div id="rl"></div>
-    <div id="load-more-wrap" style="display:none;text-align:center;margin-top:16px;padding-bottom:8px">
-      <button id="load-more-btn" class="bg" style="padding:10px 24px;font-size:13px;border-color:var(--orange);color:var(--orange)">
+    <div id="lmw" style="display:none;text-align:center;margin-top:16px;padding-bottom:8px">
+      <button id="lmb" class="bg" style="padding:10px 24px;font-size:13px;border-color:var(--orange);color:var(--orange)">
         Charger plus <span style="opacity:0.5;font-size:11px;font-weight:400">(max 60/code postal)</span>
       </button>
     </div>
   </div>
-
 </main>
 
 <script>
-let KEY = localStorage.getItem('gk') || '';
-let RES = [];
-let SEL = new Set();
-let SEEN_IDS = new Set();
-let HISTORY = []; // { cp, type, kw, minr, maxr, count, dupCount }
-let NEXT_TOKEN = null;
-let LAST_QUERY = '';
-let LAST_MINR = 0;
-let LAST_MAXR = 5;
-let CURRENT_TYPE = 'restaurant';
+let KEY = localStorage.getItem('gk')||'';
+let RES=[], SEL=new Set(), SEEN=new Set(), HIST=[];
+let NEXT_TOK=null, LAST_Q='', LAST_MINR=0, LAST_MAXR=5, CUR_TYPE='restaurant';
 
-const FIELD_MASK = 'places.id,places.displayName,places.rating,places.userRatingCount,places.formattedAddress,places.nationalPhoneNumber,places.websiteUri,places.googleMapsUri,places.primaryTypeDisplayName,nextPageToken';
+const FIELD_MASK='places.id,places.displayName,places.rating,places.userRatingCount,places.formattedAddress,places.nationalPhoneNumber,places.websiteUri,places.googleMapsUri,places.primaryTypeDisplayName,nextPageToken';
 
-const TYPE_LABELS = {
-  restaurant:'restaurants', lodging:'hébergements', hotel:'hôtels',
-  cafe:'cafés', bakery:'boulangeries', bar:'bars',
-  meal_takeaway:'restauration rapide', spa:'spa',
-  tourist_attraction:'attractions touristiques'
+const TYPE_LABELS={restaurant:'restaurants',lodging:'hébergements',hotel:'hôtels',cafe:'cafés',bakery:'boulangeries',bar:'bars',meal_takeaway:'restauration rapide',spa:'spa',tourist_attraction:'attractions touristiques'};
+const TYPE_DISPLAY={restaurant:'Restaurant',lodging:'Hébergement',hotel:'Hôtel',cafe:'Café',bakery:'Boulangerie',bar:'Bar',meal_takeaway:'Takeaway',spa:'Spa',tourist_attraction:'Tourisme'};
+
+// ── Modal ──────────────────────────────────────────────────
+const modal=document.getElementById('modal');
+if(KEY) modal.classList.add('hidden');
+document.getElementById('sb').onclick=()=>{
+  const k=document.getElementById('ki').value.trim(); if(!k) return;
+  KEY=k; localStorage.setItem('gk',k); modal.classList.add('hidden');
 };
-const TYPE_DISPLAY = {
-  restaurant:'Restaurant', lodging:'Hébergement', hotel:'Hôtel',
-  cafe:'Café', bakery:'Boulangerie', bar:'Bar',
-  meal_takeaway:'Takeaway', spa:'Spa', tourist_attraction:'Tourisme'
-};
+document.getElementById('ki').onkeydown=e=>{if(e.key==='Enter') document.getElementById('sb').click();};
+document.getElementById('ck').onclick=()=>{modal.classList.remove('hidden'); document.getElementById('ki').value='';};
 
-// ── Modal ──────────────────────────────────────────────────────
-const modal = document.getElementById('modal');
-if (KEY) modal.classList.add('hidden');
-document.getElementById('sb').onclick = () => {
-  const k = document.getElementById('ki').value.trim();
-  if (!k) return;
-  KEY = k; localStorage.setItem('gk', k); modal.classList.add('hidden');
-};
-document.getElementById('ki').onkeydown = e => { if (e.key === 'Enter') document.getElementById('sb').click(); };
-document.getElementById('ck').onclick = () => { modal.classList.remove('hidden'); document.getElementById('ki').value = ''; };
-
-// ── API ────────────────────────────────────────────────────────
-async function fetchPage(query, pageToken) {
-  const body = { textQuery: query, maxResultCount: 20, languageCode: 'fr' };
-  if (pageToken) body.pageToken = pageToken;
-  if (parseInt(document.getElementById('radius').value) === 0) body.strictTypeFiltering = true;
-
-  const r = await fetch('https://places.googleapis.com/v1/places:searchText', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Goog-Api-Key': KEY,
-      'X-Goog-FieldMask': FIELD_MASK
-    },
-    body: JSON.stringify(body)
+// ── API ────────────────────────────────────────────────────
+async function fetchPage(query, tok){
+  const body={textQuery:query, maxResultCount:20, languageCode:'fr'};
+  if(tok) body.pageToken=tok;
+  if(parseInt(document.getElementById('radius').value)===0) body.strictTypeFiltering=true;
+  const r=await fetch('https://places.googleapis.com/v1/places:searchText',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','X-Goog-Api-Key':KEY,'X-Goog-FieldMask':FIELD_MASK},
+    body:JSON.stringify(body)
   });
-  const d = await r.json();
-  if (d.error) {
-    const { message: msg = '', status = '' } = d.error;
-    if (status === 'PERMISSION_DENIED' || msg.includes('API key'))
+  const d=await r.json();
+  if(d.error){
+    const {message:msg='',status=''}=d.error;
+    if(status==='PERMISSION_DENIED'||msg.includes('API key'))
       throw new Error('Clé API refusée. Va sur console.cloud.google.com → active "Places API (New)".');
-    throw new Error('Erreur Google Places (' + status + '): ' + msg);
+    throw new Error('Erreur Google Places ('+status+'): '+msg);
   }
-  return { places: d.places || [], nextPageToken: d.nextPageToken || null };
+  return {places:d.places||[], nextPageToken:d.nextPageToken||null};
 }
 
-function filterByRating(places, minr, maxr) {
-  return places.filter(p => {
-    const r = p.rating || 0;
-    if (minr > 0 && r < minr) return false;
-    if (maxr < 5 && r > maxr) return false;
+function filterR(places){
+  return places.filter(p=>{
+    const r=p.rating||0;
+    if(LAST_MINR>0 && r<LAST_MINR) return false;
+    if(LAST_MAXR<5 && r>LAST_MAXR) return false;
     return true;
   });
 }
 
-// ── Recherche ──────────────────────────────────────────────────
-const go = document.getElementById('go');
-document.getElementById('city').onkeydown = e => { if (e.key === 'Enter') go.click(); };
+// Extrait la ville depuis une adresse formatée
+// Ex: "12 Rue des Arts, 31120 Rouffiac-Tolosan, France" → "Rouffiac-Tolosan"
+function extractCity(address){
+  if(!address) return '';
+  // Pattern: CP Ville, France ou CP Ville
+  const m = address.match(/\b\d{5}\s+([^,]+)/);
+  if(m) return m[1].trim();
+  // Fallback: avant-dernier segment
+  const parts = address.split(',');
+  if(parts.length >= 2) return parts[parts.length-2].trim();
+  return '';
+}
 
-go.onclick = async () => {
-  const cp = document.getElementById('city').value.trim();
-  if (!cp) return;
-  if (!KEY) { modal.classList.remove('hidden'); return; }
+// ── Recherche ──────────────────────────────────────────────
+const go=document.getElementById('go');
+document.getElementById('city').onkeydown=e=>{if(e.key==='Enter') go.click();};
 
-  CURRENT_TYPE = document.getElementById('type').value;
-  const kw = document.getElementById('kw').value.trim();
-  LAST_MINR = parseFloat(document.getElementById('minr').value);
-  LAST_MAXR = parseFloat(document.getElementById('maxr').value);
-
-  // Construire la requête avec le CP
-  const baseLabel = TYPE_LABELS[CURRENT_TYPE] || CURRENT_TYPE;
-  LAST_QUERY = kw ? `${kw} ${baseLabel} ${cp} France` : `${baseLabel} ${cp} France`;
-
+go.onclick=async()=>{
+  const cp=document.getElementById('city').value.trim();
+  if(!cp) return;
+  if(!KEY){modal.classList.remove('hidden'); return;}
+  CUR_TYPE=document.getElementById('type').value;
+  const kw=document.getElementById('kw').value.trim();
+  LAST_MINR=parseFloat(document.getElementById('minr').value);
+  LAST_MAXR=parseFloat(document.getElementById('maxr').value);
+  LAST_Q=kw?`${kw} ${TYPE_LABELS[CUR_TYPE]||CUR_TYPE} ${cp} France`:`${TYPE_LABELS[CUR_TYPE]||CUR_TYPE} ${cp} France`;
   setLoad(true); hideErr(); hideInfo();
-
-  try {
-    const { places, nextPageToken } = await fetchPage(LAST_QUERY, null);
-    const filtered = filterByRating(places, LAST_MINR, LAST_MAXR);
-    const newPlaces = filtered.filter(p => !SEEN_IDS.has(p.id));
-    const dupCount = filtered.length - newPlaces.length;
-
-    newPlaces.forEach(p => { SEEN_IDS.add(p.id); RES.push(p); });
-    NEXT_TOKEN = nextPageToken;
-
-    // Ajouter à l'historique
-    HISTORY.push({ cp, type: CURRENT_TYPE, kw, minr: LAST_MINR, maxr: LAST_MAXR, count: newPlaces.length, dupCount });
-
-    appendCards(newPlaces);
-    renderHistory();
-    updateLoadMore();
-
-    document.getElementById('rw').style.display = 'block';
-    document.getElementById('reset-btn').style.display = 'inline-block';
-    document.getElementById('cnt').textContent = RES.length;
-    document.getElementById('cnts').textContent = RES.length > 1 ? 's' : '';
+  try{
+    const {places,nextPageToken}=await fetchPage(LAST_Q,null);
+    const filtered=filterR(places);
+    const newP=filtered.filter(p=>!SEEN.has(p.id));
+    const dup=filtered.length-newP.length;
+    newP.forEach(p=>{SEEN.add(p.id); RES.push(p);});
+    NEXT_TOK=nextPageToken;
+    HIST.push({cp, type:CUR_TYPE, kw, minr:LAST_MINR, maxr:LAST_MAXR, count:newP.length, dup});
+    appendCards(newP);
+    renderHist();
+    updLM();
+    document.getElementById('rw').style.display='block';
+    document.getElementById('reset-wrap').style.display='block';
+    document.getElementById('cnt').textContent=RES.length;
+    document.getElementById('cnts').textContent=RES.length>1?'s':'';
     updUI();
-
-    if (dupCount > 0) showInfo(`✓ ${dupCount} doublon${dupCount > 1 ? 's' : ''} déjà présent${dupCount > 1 ? 's' : ''} dans ta liste — ignoré${dupCount > 1 ? 's' : ''}.`);
-    if (newPlaces.length === 0 && dupCount === 0) showErr('Aucun résultat pour ce code postal / ces critères.');
-
-  } catch(ex) { showErr(ex.message); }
+    if(dup>0) showInfo(`✓ ${dup} doublon${dup>1?'s':''} déjà présent${dup>1?'s':''} — ignoré${dup>1?'s':''}.`);
+    if(newP.length===0&&dup===0) showErr('Aucun résultat pour ce code postal / ces critères.');
+  }catch(ex){showErr(ex.message);}
   setLoad(false);
 };
 
-// ── Charger plus ───────────────────────────────────────────────
-document.getElementById('load-more-btn').onclick = async () => {
-  if (!NEXT_TOKEN) return;
-  const btn = document.getElementById('load-more-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="ld"></span>Chargement...';
-  try {
-    const { places, nextPageToken } = await fetchPage(LAST_QUERY, NEXT_TOKEN);
-    const filtered = filterByRating(places, LAST_MINR, LAST_MAXR);
-    const newPlaces = filtered.filter(p => !SEEN_IDS.has(p.id));
-    const dupCount = filtered.length - newPlaces.length;
-
-    newPlaces.forEach(p => { SEEN_IDS.add(p.id); RES.push(p); });
-    NEXT_TOKEN = nextPageToken;
-
-    if (HISTORY.length > 0) {
-      HISTORY[HISTORY.length - 1].count += newPlaces.length;
-      HISTORY[HISTORY.length - 1].dupCount += dupCount;
-    }
-
-    appendCards(newPlaces);
-    renderHistory();
-    updateLoadMore();
-
-    document.getElementById('cnt').textContent = RES.length;
-    document.getElementById('cnts').textContent = RES.length > 1 ? 's' : '';
+// ── Charger plus ───────────────────────────────────────────
+document.getElementById('lmb').onclick=async()=>{
+  if(!NEXT_TOK) return;
+  const btn=document.getElementById('lmb');
+  btn.disabled=true; btn.innerHTML='<span class="ld"></span>Chargement...';
+  try{
+    const {places,nextPageToken}=await fetchPage(LAST_Q,NEXT_TOK);
+    const filtered=filterR(places);
+    const newP=filtered.filter(p=>!SEEN.has(p.id));
+    const dup=filtered.length-newP.length;
+    newP.forEach(p=>{SEEN.add(p.id); RES.push(p);});
+    NEXT_TOK=nextPageToken;
+    if(HIST.length>0){HIST[HIST.length-1].count+=newP.length; HIST[HIST.length-1].dup+=dup;}
+    appendCards(newP);
+    renderHist();
+    updLM();
+    document.getElementById('cnt').textContent=RES.length;
+    document.getElementById('cnts').textContent=RES.length>1?'s':'';
     updUI();
-
-    if (dupCount > 0) showInfo(`✓ ${dupCount} doublon${dupCount > 1 ? 's' : ''} ignoré${dupCount > 1 ? 's' : ''}.`);
-  } catch(ex) { showErr(ex.message); updateLoadMore(); }
+    if(dup>0) showInfo(`✓ ${dup} doublon${dup>1?'s':''} ignoré${dup>1?'s':''}.`);
+  }catch(ex){showErr(ex.message); updLM();}
 };
 
-// ── Réinitialiser ──────────────────────────────────────────────
-document.getElementById('reset-btn').onclick = () => {
-  RES = []; SEL = new Set(); SEEN_IDS = new Set(); HISTORY = [];
-  NEXT_TOKEN = null; LAST_QUERY = '';
-  document.getElementById('rl').innerHTML = '';
-  document.getElementById('rw').style.display = 'none';
-  document.getElementById('history-panel').style.display = 'none';
-  document.getElementById('load-more-wrap').style.display = 'none';
-  document.getElementById('reset-btn').style.display = 'none';
+// ── Reset ──────────────────────────────────────────────────
+document.getElementById('reset-btn').onclick=()=>{
+  RES=[]; SEL=new Set(); SEEN=new Set(); HIST=[];
+  NEXT_TOK=null; LAST_Q='';
+  document.getElementById('rl').innerHTML='';
+  document.getElementById('rw').style.display='none';
+  document.getElementById('history-panel').style.display='none';
+  document.getElementById('lmw').style.display='none';
+  document.getElementById('reset-wrap').style.display='none';
   hideErr(); hideInfo();
 };
 
-// ── Historique ─────────────────────────────────────────────────
-function renderHistory() {
-  const panel = document.getElementById('history-panel');
-  const grid = document.getElementById('history-grid');
-  const summary = document.getElementById('accum-summary');
-
-  if (HISTORY.length === 0) { panel.style.display = 'none'; return; }
-  panel.style.display = 'block';
-
-  const totalSearches = HISTORY.length;
-  const totalUniq = RES.length;
-  const totalDup = HISTORY.reduce((a, h) => a + h.dupCount, 0);
-  summary.innerHTML = `<span style="color:var(--gold);font-weight:700">${totalUniq}</span> uniques · <span style="color:var(--muted)">${totalDup} doublons écartés</span>`;
-
-  grid.innerHTML = HISTORY.map((h, i) => {
-    const ratingRange = h.minr > 0 || h.maxr < 5
-      ? `${h.minr > 0 ? h.minr + '★' : ''}${h.minr > 0 && h.maxr < 5 ? ' – ' : ''}${h.maxr < 5 ? h.maxr + '★' : ''}${h.minr > 0 && h.maxr >= 5 ? ' et +' : ''}`
-      : 'Toutes notes';
-    return `<div class="history-tag">
+// ── Historique ─────────────────────────────────────────────
+function renderHist(){
+  const panel=document.getElementById('history-panel');
+  const grid=document.getElementById('history-grid');
+  const summary=document.getElementById('accum-summary');
+  if(HIST.length===0){panel.style.display='none'; return;}
+  panel.style.display='block';
+  const totDup=HIST.reduce((a,h)=>a+h.dup,0);
+  summary.innerHTML=`<span style="color:var(--gold);font-weight:700">${RES.length}</span> uniques · <span style="color:var(--muted)">${totDup} doublons écartés</span>`;
+  grid.innerHTML=HIST.map(h=>{
+    const rr=(h.minr>0||h.maxr<5)?`${h.minr>0?h.minr+'★':''}${h.minr>0&&h.maxr<5?' – ':''}${h.maxr<5?h.maxr+'★':''}${h.minr>0&&h.maxr>=5?' et +':''}`:'Toutes notes';
+    return`<div class="history-tag">
       <div class="ht-cp">📍 ${e(h.cp)}</div>
-      <div class="ht-type">${TYPE_DISPLAY[h.type] || h.type}${h.kw ? ' · ' + e(h.kw) : ''} · ${ratingRange}</div>
-      <div class="ht-count">+${h.count} résultat${h.count > 1 ? 's' : ''}</div>
-      ${h.dupCount > 0 ? `<div class="ht-dup">${h.dupCount} doublon${h.dupCount > 1 ? 's' : ''} ignoré${h.dupCount > 1 ? 's' : ''}</div>` : ''}
+      <div class="ht-type">${TYPE_DISPLAY[h.type]||h.type}${h.kw?' · '+e(h.kw):''} · ${rr}</div>
+      <div class="ht-count">+${h.count} résultat${h.count>1?'s':''}</div>
+      ${h.dup>0?`<div class="ht-dup">${h.dup} doublon${h.dup>1?'s':''} ignoré${h.dup>1?'s':''}</div>`:''}
     </div>`;
   }).join('');
 }
 
-// ── Cartes ─────────────────────────────────────────────────────
-function appendCards(places) {
-  const rl = document.getElementById('rl');
-  if (places.length === 0) return;
-  places.forEach(p => {
-    const id = p.id;
-    const card = document.createElement('div');
-    card.className = 'card'; card.dataset.id = id;
-    card.innerHTML = `
-      <div class="cb">&nbsp;</div>
-      <div style="flex:1">
-        <div class="cn">${e(p.displayName?.text || 'Sans nom')}</div>
-        <div class="cm">
-          ${p.rating ? `<span class="cr">${p.rating.toFixed(1)} ★</span>` : '<span style="color:#444">Pas de note</span>'}
-          ${p.userRatingCount ? `<span style="color:#555;margin-left:6px">(${p.userRatingCount} avis)</span>` : ''}
-          ${p.primaryTypeDisplayName?.text ? `<span style="color:#444;margin-left:8px;font-size:11px">${e(p.primaryTypeDisplayName.text)}</span>` : ''}
+// ── Score présence ─────────────────────────────────────────
+function presenceScore(p){
+  // Retourne {dots, badges, score}
+  const hasWeb = !!p.websiteUri;
+  const hasTel = !!p.nationalPhoneNumber;
+  const hasRating = !!p.rating;
+  const score = (hasWeb?1:0)+(hasTel?1:0)+(hasRating?1:0);
+  const dots = [
+    hasWeb   ? 'dot-green'  : 'dot-red',
+    hasTel   ? 'dot-orange' : 'dot-red',
+    hasRating? 'dot-green'  : 'dot-grey',
+  ];
+  const badges = [
+    hasWeb   ? {txt:'Site web', cls:'badge-ok'}   : {txt:'Pas de site', cls:'badge-ko'},
+    hasTel   ? {txt:'Téléphone', cls:'badge-ok'}  : {txt:'Pas de tél', cls:'badge-ko'},
+  ];
+  return {dots, badges, score};
+}
+
+// ── Bouton Instagram ───────────────────────────────────────
+// Utilise la ville extraite de l'adresse, pas le CP saisi
+function igUrl(name, address){
+  const city = extractCity(address);
+  const query = city
+    ? `site:instagram.com "${name}" "${city}"`
+    : `site:instagram.com "${name}"`;
+  return 'https://www.google.com/search?q=' + encodeURIComponent(query);
+}
+
+// ── Cartes ─────────────────────────────────────────────────
+function appendCards(places){
+  const rl=document.getElementById('rl');
+  places.forEach(p=>{
+    const id=p.id;
+    const name=p.displayName?.text||'Sans nom';
+    const addr=p.formattedAddress||'';
+    const {dots, badges}=presenceScore(p);
+    const card=document.createElement('div');
+    card.className='card'; card.dataset.id=id;
+    card.innerHTML=`
+      <div class="card-left">
+        <div class="cb" data-id="${id}">&nbsp;</div>
+        <div class="score">
+          ${dots.map(d=>`<div class="score-dot ${d}"></div>`).join('')}
         </div>
-        <div class="ca">${e(p.formattedAddress || '')}</div>
+      </div>
+      <div style="flex:1">
+        <div class="cn">${e(name)}</div>
+        <div class="cm">
+          ${p.rating?`<span class="cr">${p.rating.toFixed(1)} ★</span>`:'<span style="color:#444">Pas de note</span>'}
+          ${p.userRatingCount?`<span style="color:#555;margin-left:6px">(${p.userRatingCount} avis)</span>`:''}
+          ${p.primaryTypeDisplayName?.text?`<span style="color:#444;margin-left:8px;font-size:11px">${e(p.primaryTypeDisplayName.text)}</span>`:''}
+        </div>
+        <div class="ca">${e(addr)}</div>
+        <div class="presence">
+          ${badges.map(b=>`<span class="badge ${b.cls}">${b.txt}</span>`).join('')}
+        </div>
         <div class="cl">
-          ${p.nationalPhoneNumber ? `<a href="tel:${e(p.nationalPhoneNumber)}">📞 ${e(p.nationalPhoneNumber)}</a>` : ''}
-          ${p.websiteUri ? `<a href="${e(p.websiteUri)}" target="_blank" rel="noreferrer">🌐 Site web</a>` : ''}
-          ${p.googleMapsUri ? `<a href="${e(p.googleMapsUri)}" target="_blank" rel="noreferrer">📍 Maps</a>` : ''}
+          ${p.nationalPhoneNumber?`<a href="tel:${e(p.nationalPhoneNumber)}" onclick="event.stopPropagation()">📞 ${e(p.nationalPhoneNumber)}</a>`:''}
+          ${p.websiteUri?`<a href="${e(p.websiteUri)}" target="_blank" rel="noreferrer" onclick="event.stopPropagation()">🌐 Site web</a>`:''}
+          ${p.googleMapsUri?`<a href="${e(p.googleMapsUri)}" target="_blank" rel="noreferrer" onclick="event.stopPropagation()">📍 Maps</a>`:''}
+          <a class="btn-ig" href="${igUrl(name, addr)}" target="_blank" rel="noreferrer" onclick="event.stopPropagation()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            Instagram
+          </a>
         </div>
       </div>`;
-    card.onclick = () => {
-      if (SEL.has(id)) { SEL.delete(id); card.classList.remove('on'); card.querySelector('.cb').innerHTML = '&nbsp;'; }
-      else { SEL.add(id); card.classList.add('on'); card.querySelector('.cb').textContent = '✓'; }
-      updUI();
+    // Clic sur la carte = sélection (sauf sur les liens)
+    card.onclick=(ev)=>{
+      if(ev.target.closest('a')) return;
+      toggleCard(id, card);
     };
     rl.appendChild(card);
   });
 }
 
-function updateLoadMore() {
-  const wrap = document.getElementById('load-more-wrap');
-  const btn = document.getElementById('load-more-btn');
-  if (NEXT_TOKEN) {
-    wrap.style.display = 'block';
-    btn.disabled = false;
-    btn.innerHTML = 'Charger plus <span style="opacity:0.5;font-size:11px;font-weight:400">(max 60/code postal)</span>';
-  } else {
-    wrap.style.display = 'none';
-  }
+function toggleCard(id, card){
+  if(SEL.has(id)){SEL.delete(id); card.classList.remove('on'); card.querySelector('.cb').innerHTML='&nbsp;';}
+  else{SEL.add(id); card.classList.add('on'); card.querySelector('.cb').textContent='✓';}
+  updUI();
 }
 
-// ── UI ─────────────────────────────────────────────────────────
-function setLoad(on) {
-  go.disabled = on;
-  go.innerHTML = on ? '<span class="ld"></span>Recherche...' : 'Lancer la recherche →';
-}
-function e(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function showErr(m) { const b = document.getElementById('err'); b.innerHTML = '⚠️ ' + m; b.style.display = 'block'; }
-function hideErr() { document.getElementById('err').style.display = 'none'; }
-function showInfo(m) { const b = document.getElementById('info'); b.textContent = m; b.style.display = 'block'; setTimeout(() => b.style.display = 'none', 5000); }
-function hideInfo() { document.getElementById('info').style.display = 'none'; }
-
-function updUI() {
-  const n = SEL.size;
-  document.getElementById('scnt').textContent = n;
-  document.getElementById('ss').textContent = n > 1 ? 's' : '';
-  const ex = document.getElementById('ex');
-  ex.textContent = '↓ Exporter CSV (' + n + ')'; ex.disabled = n === 0;
-  document.getElementById('ta').textContent = (n === RES.length && RES.length > 0) ? 'Désélectionner tout' : 'Tout sélectionner';
+function updLM(){
+  const wrap=document.getElementById('lmw'), btn=document.getElementById('lmb');
+  if(NEXT_TOK){
+    wrap.style.display='block'; btn.disabled=false;
+    btn.innerHTML='Charger plus <span style="opacity:0.5;font-size:11px;font-weight:400">(max 60/code postal)</span>';
+  } else { wrap.style.display='none'; }
 }
 
-document.getElementById('ta').onclick = () => {
-  const cards = document.querySelectorAll('.card');
-  if (SEL.size === RES.length) {
-    SEL = new Set();
-    cards.forEach(c => { c.classList.remove('on'); c.querySelector('.cb').innerHTML = '&nbsp;'; });
-  } else {
-    SEL = new Set(RES.map(p => p.id));
-    cards.forEach(c => { c.classList.add('on'); c.querySelector('.cb').textContent = '✓'; });
-  }
+// ── UI ─────────────────────────────────────────────────────
+function setLoad(on){ go.disabled=on; go.innerHTML=on?'<span class="ld"></span>Recherche...':'Rechercher →'; }
+function e(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function showErr(m){ const b=document.getElementById('err'); b.innerHTML='⚠️ '+m; b.style.display='block'; }
+function hideErr(){ document.getElementById('err').style.display='none'; }
+function showInfo(m){ const b=document.getElementById('info'); b.textContent=m; b.style.display='block'; setTimeout(()=>b.style.display='none',5000); }
+function hideInfo(){ document.getElementById('info').style.display='none'; }
+
+function updUI(){
+  const n=SEL.size;
+  document.getElementById('scnt').textContent=n;
+  document.getElementById('ss').textContent=n>1?'s':'';
+  const ex=document.getElementById('ex');
+  ex.textContent='↓ Exporter CSV ('+n+')'; ex.disabled=n===0;
+  document.getElementById('ta').textContent=(n===RES.length&&RES.length>0)?'Désélectionner tout':'Tout sélectionner';
+}
+
+document.getElementById('ta').onclick=()=>{
+  const cards=document.querySelectorAll('.card');
+  if(SEL.size===RES.length){SEL=new Set(); cards.forEach(c=>{c.classList.remove('on'); c.querySelector('.cb').innerHTML='&nbsp;';});}
+  else{SEL=new Set(RES.map(p=>p.id)); cards.forEach(c=>{c.classList.add('on'); c.querySelector('.cb').textContent='✓';});}
   updUI();
 };
 
-// ── Export CSV ─────────────────────────────────────────────────
-document.getElementById('ex').onclick = () => {
-  const rows = RES.filter(p => SEL.has(p.id));
-  if (!rows.length) return;
-
-  const hdrs = ['Nom', 'Adresse', 'Téléphone', 'Site web', 'Note', 'Avis', 'Google Maps', 'Type', 'Code postal', 'Filtres note'];
-  const data = rows.map(p => {
-    // Retrouver le CP de cette fiche via l'adresse
-    const addr = p.formattedAddress || '';
-    const cpMatch = addr.match(/\b\d{5}\b/);
-    const cpFound = cpMatch ? cpMatch[0] : HISTORY.map(h => h.cp).join('/');
-    const ratingFilter = HISTORY.map(h => `${h.minr > 0 ? h.minr+'★' : ''}→${h.maxr < 5 ? h.maxr+'★' : ''}`).join(' / ');
-    return [
-      p.displayName?.text || '', addr,
-      p.nationalPhoneNumber || '', p.websiteUri || '',
-      p.rating || '', p.userRatingCount || '', p.googleMapsUri || '',
-      TYPE_DISPLAY[CURRENT_TYPE] || CURRENT_TYPE, cpFound, ratingFilter
+// ── Export CSV ─────────────────────────────────────────────
+document.getElementById('ex').onclick=()=>{
+  const rows=RES.filter(p=>SEL.has(p.id)); if(!rows.length) return;
+  const hdrs=['Nom','Adresse','Ville','Téléphone','Site web','Note','Avis','Instagram (recherche)','Google Maps','Type','Code(s) postal(aux)','Filtres note'];
+  const zones=HIST.map(h=>h.cp).join('/');
+  const ratingFilter=HIST.map(h=>`${h.minr>0?h.minr+'★ min':''} ${h.maxr<5?h.maxr+'★ max':''}`).filter(Boolean).join(' / ')||'Toutes notes';
+  const data=rows.map(p=>{
+    const addr=p.formattedAddress||'';
+    const city=extractCity(addr);
+    const cpAddr=addr.match(/\b\d{5}\b/)?addr.match(/\b\d{5}\b/)[0]:'';
+    return[
+      p.displayName?.text||'', addr, city,
+      p.nationalPhoneNumber||'', p.websiteUri||'',
+      p.rating||'', p.userRatingCount||'',
+      igUrl(p.displayName?.text||'', addr),
+      p.googleMapsUri||'',
+      TYPE_DISPLAY[CUR_TYPE]||CUR_TYPE, cpAddr||zones, ratingFilter
     ];
   });
-
-  const csv = [hdrs, ...data].map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\n');
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' }));
-  a.download = 'prospects_' + CURRENT_TYPE + '_' + new Date().toISOString().slice(0, 10) + '.csv';
+  const csv=[hdrs,...data].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'}));
+  a.download='prospects_'+CUR_TYPE+'_'+new Date().toISOString().slice(0,10)+'.csv';
   a.click();
 };
 </script>
