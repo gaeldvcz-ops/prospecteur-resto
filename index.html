@@ -57,12 +57,6 @@
   .cb { width:18px; height:18px; border-radius:4px; border:2px solid #3a3d50; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#fff; cursor:pointer; }
   .card.on .cb { border-color:var(--orange); background:var(--orange); }
   /* Score présence */
-  .score { display:flex; flex-direction:column; gap:3px; }
-  .score-dot { width:10px; height:10px; border-radius:50%; }
-  .dot-green { background:#4caf50; }
-  .dot-orange { background:#EE6312; }
-  .dot-red { background:#c0392b; }
-  .dot-grey { background:#2a2d3e; }
   /* Card body */
   .cn { font-size:15px; font-weight:700; color:#fff; margin-bottom:4px; }
   .cm { font-size:12px; color:var(--dim); margin-bottom:3px; }
@@ -78,7 +72,12 @@
   .presence { display:flex; gap:5px; flex-wrap:wrap; margin-top:5px; }
   .badge { font-size:10px; padding:2px 7px; border-radius:10px; font-weight:600; }
   .badge-ok { background:#0e2010; color:#7ac060; border:1px solid #1a4020; }
-  .badge-ko { background:#1a1010; color:#666; border:1px solid #2a1818; }
+  .badge-ko { background:#2a0808; color:#ff3b3b; border:1px solid #5a1010; font-weight:700; }
+  .card.dismissed { opacity:0.32; filter:grayscale(0.5); border-color:#1a1a1a !important; background:var(--bg) !important; }
+  .card.dismissed .cn { text-decoration:line-through; color:#444; }
+  .btn-dismiss { padding:3px 9px; background:transparent; border:1px solid #2a2d3e; border-radius:5px; color:#555; font-size:10px; font-weight:600; cursor:pointer; font-family:inherit; white-space:nowrap; transition:all 0.15s; }
+  .btn-dismiss:hover { border-color:#e05252; color:#e05252; background:#1a0808; }
+  .card.dismissed .btn-dismiss { color:#333; border-color:#1a1a1a; pointer-events:none; }
   /* Misc */
   .eb { background:#1e0a0a; border:1px solid #5a1a1a; border-radius:8px; padding:12px 16px; margin-bottom:16px; color:#e05252; font-size:13px; }
   .ib { background:#101a0e; border:1px solid #1e3a18; border-radius:8px; padding:10px 14px; margin-bottom:12px; color:#7ac060; font-size:12px; }
@@ -202,8 +201,6 @@
 
   <div id="rw" style="display:none">
     <!-- Légende score -->
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#4caf50"></div> Site web</div>
       <div class="legend-item"><div class="legend-dot" style="background:#EE6312"></div> Téléphone</div>
       <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div> Manquant</div>
       <div class="legend-item" style="margin-left:8px;color:#555">● = score de présence digitale</div>
@@ -228,6 +225,7 @@
 let KEY = localStorage.getItem('gk')||'';
 let RES=[], SEL=new Set(), SEEN=new Set(), HIST=[];
 let NEXT_TOK=null, LAST_Q='', LAST_MINR=0, LAST_MAXR=5, CUR_TYPE='restaurant';
+let DISMISSED=new Set();
 
 const FIELD_MASK='places.id,places.displayName,places.rating,places.userRatingCount,places.formattedAddress,places.nationalPhoneNumber,places.websiteUri,places.googleMapsUri,places.primaryTypeDisplayName,nextPageToken';
 
@@ -349,6 +347,7 @@ document.getElementById('lmb').onclick=async()=>{
 document.getElementById('reset-btn').onclick=()=>{
   RES=[]; SEL=new Set(); SEEN=new Set(); HIST=[];
   NEXT_TOK=null; LAST_Q='';
+  DISMISSED=new Set();
   document.getElementById('rl').innerHTML='';
   document.getElementById('rw').style.display='none';
   document.getElementById('history-panel').style.display='none';
@@ -379,21 +378,13 @@ function renderHist(){
 
 // ── Score présence ─────────────────────────────────────────
 function presenceScore(p){
-  // Retourne {dots, badges, score}
   const hasWeb = !!p.websiteUri;
   const hasTel = !!p.nationalPhoneNumber;
-  const hasRating = !!p.rating;
-  const score = (hasWeb?1:0)+(hasTel?1:0)+(hasRating?1:0);
-  const dots = [
-    hasWeb   ? 'dot-green'  : 'dot-red',
-    hasTel   ? 'dot-orange' : 'dot-red',
-    hasRating? 'dot-green'  : 'dot-grey',
-  ];
   const badges = [
-    hasWeb   ? {txt:'Site web', cls:'badge-ok'}   : {txt:'Pas de site', cls:'badge-ko'},
-    hasTel   ? {txt:'Téléphone', cls:'badge-ok'}  : {txt:'Pas de tél', cls:'badge-ko'},
+    hasWeb ? {txt:'Site web', cls:'badge-ok'}  : {txt:'Pas de site', cls:'badge-ko'},
+    hasTel ? {txt:'Téléphone', cls:'badge-ok'} : {txt:'Pas de tél', cls:'badge-ko'},
   ];
-  return {dots, badges, score};
+  return {badges};
 }
 
 // ── Bouton Instagram ───────────────────────────────────────
@@ -413,18 +404,18 @@ function appendCards(places){
     const id=p.id;
     const name=p.displayName?.text||'Sans nom';
     const addr=p.formattedAddress||'';
-    const {dots, badges}=presenceScore(p);
+    const {badges}=presenceScore(p);
     const card=document.createElement('div');
     card.className='card'; card.dataset.id=id;
     card.innerHTML=`
       <div class="card-left">
         <div class="cb" data-id="${id}">&nbsp;</div>
-        <div class="score">
-          ${dots.map(d=>`<div class="score-dot ${d}"></div>`).join('')}
-        </div>
       </div>
       <div style="flex:1">
-        <div class="cn">${e(name)}</div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px">
+          <div class="cn" style="margin-bottom:0">${e(name)}</div>
+          <button class="btn-dismiss" data-id="${id}" onclick="dismissCard('${id}',event)">✕ Écarter</button>
+        </div>
         <div class="cm">
           ${p.rating?`<span class="cr">${p.rating.toFixed(1)} ★</span>`:'<span style="color:#444">Pas de note</span>'}
           ${p.userRatingCount?`<span style="color:#555;margin-left:6px">(${p.userRatingCount} avis)</span>`:''}
@@ -444,16 +435,36 @@ function appendCards(places){
           </a>
         </div>
       </div>`;
-    // Clic sur la carte = sélection (sauf sur les liens)
     card.onclick=(ev)=>{
-      if(ev.target.closest('a')) return;
+      if(ev.target.closest('a')||ev.target.closest('.btn-dismiss')) return;
       toggleCard(id, card);
     };
     rl.appendChild(card);
   });
 }
 
+function dismissCard(id, ev){
+  ev.stopPropagation();
+  const card=document.querySelector('.card[data-id="'+id+'"]');
+  if(!card) return;
+  const isDismissed=card.classList.contains('dismissed');
+  if(isDismissed){
+    // Réactiver
+    card.classList.remove('dismissed');
+    card.querySelector('.btn-dismiss').textContent='✕ Écarter';
+    DISMISSED.delete(id);
+  } else {
+    // Écarter : désélectionner d'abord si sélectionné
+    if(SEL.has(id)){ SEL.delete(id); card.classList.remove('on'); card.querySelector('.cb').innerHTML='&nbsp;'; }
+    card.classList.add('dismissed');
+    card.querySelector('.btn-dismiss').textContent='↩ Réactiver';
+    DISMISSED.add(id);
+    updUI();
+  }
+}
+
 function toggleCard(id, card){
+  if(card.classList.contains('dismissed')) return; // Carte écartée = non sélectionnable
   if(SEL.has(id)){SEL.delete(id); card.classList.remove('on'); card.querySelector('.cb').innerHTML='&nbsp;';}
   else{SEL.add(id); card.classList.add('on'); card.querySelector('.cb').textContent='✓';}
   updUI();
@@ -493,7 +504,7 @@ document.getElementById('ta').onclick=()=>{
 
 // ── Export CSV ─────────────────────────────────────────────
 document.getElementById('ex').onclick=()=>{
-  const rows=RES.filter(p=>SEL.has(p.id)); if(!rows.length) return;
+  const rows=RES.filter(p=>SEL.has(p.id)&&!DISMISSED.has(p.id)); if(!rows.length) return;
   const hdrs=['Nom','Adresse','Ville','Téléphone','Site web','Note','Avis','Instagram (recherche)','Google Maps','Type','Code(s) postal(aux)','Filtres note'];
   const zones=HIST.map(h=>h.cp).join('/');
   const ratingFilter=HIST.map(h=>`${h.minr>0?h.minr+'★ min':''} ${h.maxr<5?h.maxr+'★ max':''}`).filter(Boolean).join(' / ')||'Toutes notes';
