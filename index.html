@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio DVCZ — Prospecteur</title>
+<title>Studio DVCZ — Prospecteur v1.1</title>
 <style>
   :root { --bg:#0b0d14; --surface:#11131e; --border:#1e2235; --orange:#EE6312; --gold:#C9A96E; --text:#f0f0f0; --muted:#666; --dim:#888; }
   * { box-sizing:border-box; margin:0; padding:0; }
@@ -123,7 +123,7 @@
 <header>
   <div class="logo">
     <div class="lsq">S</div>
-    <div><div class="lt">Studio DVCZ — Prospecteur</div><div class="ls">Google Places · Génération de leads</div></div>
+    <div><div class="lt">Studio DVCZ — Prospecteur</div><div class="ls">Google Places · Génération de leads · <span style="color:var(--orange)">v1.1</span></div></div>
   </div>
   <button class="ba" id="ck">🔑 Clé API</button>
 </header>
@@ -247,7 +247,7 @@
 <script>
 let KEY = localStorage.getItem('gk')||'';
 let RES=[], SEL=new Set(), SEEN=new Set(), HIST=[];
-let NEXT_TOK=null, LAST_Q='', LAST_MINR=0, LAST_MAXR=5, CUR_TYPE='restaurant';
+let NEXT_TOK=null, LAST_Q='', LAST_MINR=0, LAST_MAXR=5, CUR_TYPE='restaurant', LAST_CP='';
 let DISMISSED=new Set();
 let IMPORTED_IDS=new Set(); // IDs déjà prospectés (chargés depuis CSV/XLS)
 
@@ -320,6 +320,7 @@ go.onclick=async()=>{
   const kw=document.getElementById('kw').value.trim();
   LAST_MINR=parseFloat(document.getElementById('minr').value);
   LAST_MAXR=parseFloat(document.getElementById('maxr').value);
+  LAST_CP=cp;
   LAST_Q=kw?`${kw} ${TYPE_LABELS[CUR_TYPE]||CUR_TYPE} ${cp} France`:`${TYPE_LABELS[CUR_TYPE]||CUR_TYPE} ${cp} France`;
   setLoad(true); hideErr(); hideInfo();
   try{
@@ -360,7 +361,7 @@ document.getElementById('lmb').onclick=async()=>{
     const filtered=filterR(places);
     // Filtre CP strict : si rayon = 0, on garde uniquement les résultats dont l'adresse contient le CP saisi
     const cpStrict = parseInt(document.getElementById('radius').value) === 0;
-    const cpInput = cp.replace(/\s/g,'');
+    const cpInput = LAST_CP.replace(/\s/g,'');
     const cpFiltered = cpStrict && /^\d{5}$/.test(cpInput)
       ? filtered.filter(p => (p.formattedAddress||'').includes(cpInput))
       : filtered;
