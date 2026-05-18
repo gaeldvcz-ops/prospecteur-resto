@@ -622,8 +622,7 @@ function parseIdsFromCSV(text){
   // Cherche la colonne "Google Maps" qui contient des URLs avec place_id ou CID
   // Mais l'ID Place unique qu'on stocke dans data-id est dans les URLs Maps
   // On extrait aussi depuis la première colonne "Nom" pour matcher par nom si pas d'ID
-  const lines = text.split(/?
-/).filter(l => l.trim());
+  const lines = text.split(/\r?\n/).filter(l => l.trim());
   if(lines.length < 2) return [];
 
   // Cherche colonne Google Maps (contient place_id dans l'URL ou l'ID direct)
