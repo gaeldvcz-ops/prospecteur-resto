@@ -81,7 +81,15 @@
   .card.dismissed .cn { text-decoration:line-through; color:#444; }
   .btn-dismiss { padding:3px 9px; background:transparent; border:1px solid #2a2d3e; border-radius:5px; color:#555; font-size:10px; font-weight:600; cursor:pointer; font-family:inherit; white-space:nowrap; transition:all 0.15s; }
   .btn-dismiss:hover { border-color:#e05252; color:#e05252; background:#1a0808; }
-  .card.dismissed .btn-dismiss { color:#333; border-color:#1a1a1a; pointer-events:none; }
+  .card.dismissed .btn-dismiss { color:#555; border-color:#2a2d3e; }
+  /* Import */
+  .import-bar { background:#0e1018; border:1px solid #1e2235; border-radius:10px; padding:12px 18px; margin-bottom:16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .import-bar label { color:var(--gold); font-size:12px; font-weight:600; letter-spacing:0.5px; text-transform:none; margin-bottom:0; cursor:pointer; white-space:nowrap; }
+  .import-bar input[type=file] { display:none; }
+  .btn-import { padding:7px 16px; background:transparent; border:1px solid var(--gold); border-radius:6px; color:var(--gold); font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .btn-import:hover { background:#1a1408; }
+  .import-status { font-size:12px; color:#7ac060; }
+  .import-status.err { color:#e05252; }
   /* Misc */
   .eb { background:#1e0a0a; border:1px solid #5a1a1a; border-radius:8px; padding:12px 16px; margin-bottom:16px; color:#e05252; font-size:13px; }
   .ib { background:#101a0e; border:1px solid #1e3a18; border-radius:8px; padding:10px 14px; margin-bottom:12px; color:#7ac060; font-size:12px; }
@@ -191,6 +199,17 @@
     </div>
   </div>
 
+  <!-- Import données précédentes -->
+  <div class="import-bar">
+    <div>
+      <div style="color:var(--gold);font-size:12px;font-weight:600;margin-bottom:3px">📂 Importer un export précédent</div>
+      <div style="color:var(--muted);font-size:11px">Les établissements déjà prospectés seront automatiquement exclus des prochaines recherches</div>
+    </div>
+    <label class="btn-import" for="file-import">Choisir un fichier CSV / XLS</label>
+    <input type="file" id="file-import" accept=".csv,.xls,.xlsx">
+    <span class="import-status" id="import-status"></span>
+  </div>
+
   <!-- Historique -->
   <div class="history-panel" id="history-panel" style="display:none">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
@@ -230,6 +249,7 @@ let KEY = localStorage.getItem('gk')||'';
 let RES=[], SEL=new Set(), SEEN=new Set(), HIST=[];
 let NEXT_TOK=null, LAST_Q='', LAST_MINR=0, LAST_MAXR=5, CUR_TYPE='restaurant';
 let DISMISSED=new Set();
+let IMPORTED_IDS=new Set(); // IDs déjà prospectés (chargés depuis CSV/XLS)
 
 const FIELD_MASK='places.id,places.displayName,places.rating,places.userRatingCount,places.formattedAddress,places.nationalPhoneNumber,places.websiteUri,places.googleMapsUri,places.primaryTypeDisplayName,nextPageToken';
 
@@ -305,7 +325,13 @@ go.onclick=async()=>{
   try{
     const {places,nextPageToken}=await fetchPage(LAST_Q,null);
     const filtered=filterR(places);
-    const newP=filtered.filter(p=>!SEEN.has(p.id));
+    // Filtre CP strict : si rayon = 0, on garde uniquement les résultats dont l'adresse contient le CP saisi
+    const cpStrict = parseInt(document.getElementById('radius').value) === 0;
+    const cpInput = cp.replace(/\s/g,'');
+    const cpFiltered = cpStrict && /^\d{5}$/.test(cpInput)
+      ? filtered.filter(p => (p.formattedAddress||'').includes(cpInput))
+      : filtered;
+    const newP=cpFiltered.filter(p=>!SEEN.has(p.id)&&!IMPORTED_IDS.has(p.id));
     const dup=filtered.length-newP.length;
     newP.forEach(p=>{SEEN.add(p.id); RES.push(p);});
     NEXT_TOK=nextPageToken;
@@ -332,7 +358,13 @@ document.getElementById('lmb').onclick=async()=>{
   try{
     const {places,nextPageToken}=await fetchPage(LAST_Q,NEXT_TOK);
     const filtered=filterR(places);
-    const newP=filtered.filter(p=>!SEEN.has(p.id));
+    // Filtre CP strict : si rayon = 0, on garde uniquement les résultats dont l'adresse contient le CP saisi
+    const cpStrict = parseInt(document.getElementById('radius').value) === 0;
+    const cpInput = cp.replace(/\s/g,'');
+    const cpFiltered = cpStrict && /^\d{5}$/.test(cpInput)
+      ? filtered.filter(p => (p.formattedAddress||'').includes(cpInput))
+      : filtered;
+    const newP=cpFiltered.filter(p=>!SEEN.has(p.id)&&!IMPORTED_IDS.has(p.id));
     const dup=filtered.length-newP.length;
     newP.forEach(p=>{SEEN.add(p.id); RES.push(p);});
     NEXT_TOK=nextPageToken;
@@ -352,6 +384,8 @@ document.getElementById('reset-btn').onclick=()=>{
   RES=[]; SEL=new Set(); SEEN=new Set(); HIST=[];
   NEXT_TOK=null; LAST_Q='';
   DISMISSED=new Set();
+  IMPORTED_IDS=new Set();
+  document.getElementById('import-status').textContent='';
   document.getElementById('rl').innerHTML='';
   document.getElementById('rw').style.display='none';
   document.getElementById('history-panel').style.display='none';
@@ -530,9 +564,107 @@ document.getElementById('ta').onclick=()=>{
   updUI();
 };
 
+// ── Import CSV / XLS ─────────────────────────────────────
+document.getElementById('file-import').addEventListener('change', function(){
+  const file = this.files[0];
+  if(!file) return;
+  const status = document.getElementById('import-status');
+  status.className = 'import-status';
+  status.textContent = '⏳ Lecture...';
+
+  const ext = file.name.split('.').pop().toLowerCase();
+
+  if(ext === 'csv'){
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      try {
+        const text = ev.target.result;
+        const ids = parseIdsFromCSV(text);
+        ids.forEach(id => IMPORTED_IDS.add(id));
+        SEEN = new Set([...SEEN, ...IMPORTED_IDS]);
+        status.textContent = `✓ ${ids.length} établissement${ids.length>1?'s':''} importé${ids.length>1?'s':''}`;
+      } catch(err) {
+        status.className = 'import-status err';
+        status.textContent = '⚠️ Erreur lecture CSV';
+      }
+    };
+    reader.readAsText(file, 'UTF-8');
+  } else if(ext === 'xlsx' || ext === 'xls'){
+    // Lecture XLS via FileReader en binaire + parsing manuel basique
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      try {
+        // Pour XLS/XLSX on extrait les URLs Google Maps qui contiennent l'ID place
+        const text = ev.target.result;
+        const ids = extractIdsFromText(text);
+        if(ids.length === 0){
+          status.className = 'import-status err';
+          status.textContent = '⚠️ Pas d'IDs trouvés. Utilise le format CSV de préférence.';
+          return;
+        }
+        ids.forEach(id => IMPORTED_IDS.add(id));
+        SEEN = new Set([...SEEN, ...IMPORTED_IDS]);
+        status.textContent = `✓ ${ids.length} établissement${ids.length>1?'s':''} importé${ids.length>1?'s':''}`;
+      } catch(err) {
+        status.className = 'import-status err';
+        status.textContent = '⚠️ Format XLS non supporté, utilise le CSV.';
+      }
+    };
+    reader.readAsBinaryString(file);
+  } else {
+    status.className = 'import-status err';
+    status.textContent = '⚠️ Format non supporté (CSV ou XLS uniquement)';
+  }
+});
+
+function parseIdsFromCSV(text){
+  // Cherche la colonne "Google Maps" qui contient des URLs avec place_id ou CID
+  // Mais l'ID Place unique qu'on stocke dans data-id est dans les URLs Maps
+  // On extrait aussi depuis la première colonne "Nom" pour matcher par nom si pas d'ID
+  const lines = text.split(/?
+/).filter(l => l.trim());
+  if(lines.length < 2) return [];
+
+  // Cherche colonne Google Maps (contient place_id dans l'URL ou l'ID direct)
+  const headers = parseCSVLine(lines[0]);
+  const mapsCol = headers.findIndex(h => h.toLowerCase().includes('maps'));
+  const ids = [];
+
+  for(let i = 1; i < lines.length; i++){
+    const cols = parseCSVLine(lines[i]);
+    // Cherche un place ID dans l'URL Maps (format: place_id:ChIJ... ou /maps/place/...)
+    const mapsUrl = mapsCol >= 0 ? cols[mapsCol] || '' : '';
+    const placeIdMatch = mapsUrl.match(/place_id[=:]([A-Za-z0-9_-]+)/);
+    if(placeIdMatch) { ids.push(placeIdMatch[1]); continue; }
+    // Fallback : cherche ChIJ... directement dans toute la ligne
+    const chijMatch = lines[i].match(/ChIJ[A-Za-z0-9_-]{10,}/);
+    if(chijMatch) ids.push(chijMatch[0]);
+  }
+  return [...new Set(ids)];
+}
+
+function extractIdsFromText(text){
+  // Cherche tous les ChIJ... dans le texte brut (fonctionne pour XLS converti en texte)
+  const matches = text.match(/ChIJ[A-Za-z0-9_-]{10,}/g) || [];
+  return [...new Set(matches)];
+}
+
+function parseCSVLine(line){
+  const result = [];
+  let cur = '', inQ = false;
+  for(let i = 0; i < line.length; i++){
+    const c = line[i];
+    if(c === '"'){ inQ = !inQ; continue; }
+    if(c === ',' && !inQ){ result.push(cur.trim()); cur = ''; continue; }
+    cur += c;
+  }
+  result.push(cur.trim());
+  return result;
+}
+
 // ── Export CSV ─────────────────────────────────────────────
 document.getElementById('ex').onclick=()=>{
-  const rows=RES.filter(p=>SEL.has(p.id)&&!DISMISSED.has(p.id)); if(!rows.length) return;
+  const rows=RES.filter(p=>SEL.has(p.id)&&!DISMISSED.has(p.id)&&!IMPORTED_IDS.has(p.id)); if(!rows.length) return;
   const hdrs=['Nom','Adresse','Ville','Téléphone','Site web','Note','Avis','Instagram (recherche)','Google Maps','Type','Code(s) postal(aux)','Filtres note'];
   const zones=HIST.map(h=>h.cp).join('/');
   const ratingFilter=HIST.map(h=>`${h.minr>0?h.minr+'★ min':''} ${h.maxr<5?h.maxr+'★ max':''}`).filter(Boolean).join(' / ')||'Toutes notes';
